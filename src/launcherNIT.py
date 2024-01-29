@@ -4,6 +4,7 @@ from interfaceDefinition import InterfaceDefinition
 from autoOrganizer import AutoOrganizer, AutoOrganizerInterface
 from morseTranslator import MorseTranslator, MorseTranslatorInterface
 from randomGenerator import RandomGenerator, RandomGeneratorInterface
+from digitalAbaco import DigitalAbaco
 import os
 import json
 try:
@@ -57,7 +58,8 @@ class LauncherNIT(InterfaceDefinition):
         self.programs = {
             "AutoOrganizer": AutoOrganizerInterface(AutoOrganizer()),
             "TraduttoreMorse": MorseTranslatorInterface(MorseTranslator()),
-            "GeneratoreCasuali:": RandomGeneratorInterface(RandomGenerator())
+            "GeneratoreCasuali:": RandomGeneratorInterface(RandomGenerator()),
+            "DigitalAbaco": DigitalAbaco()
         }
 
     def textInterface(self):

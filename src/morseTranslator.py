@@ -60,7 +60,7 @@ class MorseTranslator:
             if toTranslate[index] == " ":
                 if index < len(toTranslate)-1 and toTranslate[index+1] == " " and toTranslate[index-1] != " ":
                         if sequence not in self.morseChar:
-                            return MorseTranslator.languages[lang]["errorMessageMorsePart1"] + sequence + MorseTranslator.languages[lang]["errorMessageMorsePart2"] + str(toTranslate.index(sequence)) + ")"
+                            return MorseTranslatorInterface.languages[lang]["errorMessageMorsePart1"] + sequence + MorseTranslatorInterface.languages[lang]["errorMessageMorsePart2"] + str(toTranslate.index(sequence)) + ")"
                         translated += self.abc[self.morseChar.index(sequence)] + " "
                         sequence = ""
                 else:
