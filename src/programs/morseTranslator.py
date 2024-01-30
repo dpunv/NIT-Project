@@ -1,4 +1,4 @@
-from interfaceDefinition import InterfaceDefinition
+from programs.interfaceDefinition import InterfaceDefinition
 
 class MorseTranslator:
     """
@@ -101,7 +101,8 @@ class MorseTranslatorInterface(InterfaceDefinition):
             "errorMessageMorsePart1": "codice morse non valido: ",
             "errorMessageMorsePart2": " (posizione ",
             "errorMessageTextPart1": "carattere non valido: ",
-            "errorMessageTextPart2": " (posizione "
+            "errorMessageTextPart2": " (posizione ",
+            "errorMessage": "errore"
         },
         "eng": {
             "choiceToMorse": "write a text to translate in morse",
@@ -113,7 +114,8 @@ class MorseTranslatorInterface(InterfaceDefinition):
             "errorMessageMorsePart1": "invalid morse code: ",
             "errorMessageMorsePart2": " (position ",
             "errorMessageTextPart1": "invalid character: ",
-            "errorMessageTextPart2": " (position "
+            "errorMessageTextPart2": " (position ",
+            "errorMessage": "error"
         }
     }
 
@@ -127,6 +129,7 @@ class MorseTranslatorInterface(InterfaceDefinition):
         Returns:
             None
         """
+
         super().__init__(["-- --- .-. ... .", "morse to alphabet and back again"], "0.2", "dp")
         self.mt = mt if mt != None else MorseTranslator()
 
@@ -140,6 +143,7 @@ class MorseTranslatorInterface(InterfaceDefinition):
         Returns:
             None
         """
+
         while True:
             super().drowPrologue()
             print(MorseTranslatorInterface.languages[lang]["choiceToMorse"])
@@ -150,10 +154,13 @@ class MorseTranslatorInterface(InterfaceDefinition):
                 print(MorseTranslatorInterface.languages[lang]["goodbye"])
                 return
             else:
-                if choice.lower()[0] in self.mt.abc:
-                    print(self.mt.toMorse(choice.lower()))
-                else:
-                    print(self.mt.fromMorse(choice))
+                try:
+                    if choice.lower()[0] in self.mt.abc:
+                        print(self.mt.toMorse(choice.lower()))
+                    else:
+                        print(self.mt.fromMorse(choice))
+                except:
+                    print(MorseTranslatorInterface.languages[lang]["errorMessage"])
             input(MorseTranslatorInterface.languages[lang]["pressEnterToContinue"])
 
 if __name__ == "__main__":

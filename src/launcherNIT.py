@@ -1,10 +1,5 @@
 
-
-from interfaceDefinition import InterfaceDefinition
-from autoOrganizer import AutoOrganizer, AutoOrganizerInterface
-from morseTranslator import MorseTranslator, MorseTranslatorInterface
-from randomGenerator import RandomGenerator, RandomGeneratorInterface
-from digitalAbaco import DigitalAbaco
+from programs import autoOrganizer, morseTranslator, randomGenerator, digitalAbaco, fileDiver, interfaceDefinition
 import os
 import json
 try:
@@ -12,7 +7,7 @@ try:
 except ImportError:
     pass
 
-class LauncherNIT(InterfaceDefinition):
+class LauncherNIT(interfaceDefinition.InterfaceDefinition):
     """
     Class that represent the launcher of the NIT programs
 
@@ -54,12 +49,14 @@ class LauncherNIT(InterfaceDefinition):
         Returns:
             None
         """
+
         super().__init__(["launcher NIT"], "0.1", "dp")
         self.programs = {
-            "AutoOrganizer": AutoOrganizerInterface(AutoOrganizer()),
-            "TraduttoreMorse": MorseTranslatorInterface(MorseTranslator()),
-            "GeneratoreCasuali:": RandomGeneratorInterface(RandomGenerator()),
-            "DigitalAbaco": DigitalAbaco()
+            "Auto Organizer": autoOrganizer.AutoOrganizerInterface(autoOrganizer.AutoOrganizer()),
+            "Morse Translator": morseTranslator.MorseTranslatorInterface(morseTranslator.MorseTranslator()),
+            "Random Generator With Memory:": randomGenerator.RandomGeneratorInterface(randomGenerator.RandomGenerator()),
+            "Digital Abaco": digitalAbaco.DigitalAbaco(),
+            "File Diver": fileDiver.FileDiverInterface()
         }
 
     def textInterface(self):
@@ -69,6 +66,7 @@ class LauncherNIT(InterfaceDefinition):
         Returns:
             None
         """
+
         lang = "eng"
         if(os.path.exists("NITConfig.json")):
             with open("NITConfig.json", "r") as file:

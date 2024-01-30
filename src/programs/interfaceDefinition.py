@@ -30,6 +30,15 @@ class InterfaceDefinition:
         self.version = version
         self.author = author
     
+    def clearScreen(self):
+        """
+        Clear the screen
+
+        Returns:
+            None
+        """
+        os.system('cls' if os.name == 'nt' else 'clear')
+    
     def drowPrologue(self):
         """
         Show the prologue
@@ -37,7 +46,7 @@ class InterfaceDefinition:
         Returns:
             None
         """
-        os.system('cls' if os.name == 'nt' else 'clear')
+        self.clearScreen()
         lenght = max([len(i) for i in self.lines])
         tryLine = f"by {self.author} v:{self.version}"
         if len(tryLine) > lenght:

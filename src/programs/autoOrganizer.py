@@ -1,7 +1,7 @@
 import os
 import json
 import shutil
-from interfaceDefinition import InterfaceDefinition
+from programs.interfaceDefinition import InterfaceDefinition
 
 class AutoOrganizer:
     """
@@ -220,7 +220,6 @@ class AutoOrganizerInterface(InterfaceDefinition):
     Methods:
         textInterface(lang): Show the AutoOrganizer interface
     """
-
     
     languages = {
         "ita": {
@@ -250,6 +249,8 @@ class AutoOrganizerInterface(InterfaceDefinition):
             "fileRemoveError": "Errore nell'eliminazione del file",
             "insertIdFileToSearchTags": "Inserisci l'id del file di cui vuoi i tags: ",
             "choiceExit2": "5. Esci",
+            "searchError": "Errore nella ricerca dei file",
+            "showTagsError": "Errore nel mostrare i tags"
         },
         "eng": {
             "choiceLoadConfig": "1. Load configuration",
@@ -278,6 +279,8 @@ class AutoOrganizerInterface(InterfaceDefinition):
             "fileRemoveError": "Error removing file",
             "insertIdFileToSearchTags": "Insert the id of the file to show the tags: ",
             "choiceExit2": "5. Exit",
+            "searchError": "Error searching files",
+            "showTagsError": "Error showing tags"
         }
     }
 
@@ -312,18 +315,24 @@ class AutoOrganizerInterface(InterfaceDefinition):
                 print(AutoOrganizerInterface.languages[lang]["choiceExit1"])
                 choice = input(AutoOrganizerInterface.languages[lang]["choice"])
                 if choice == "1":
-                    path = input(AutoOrganizerInterface.languages[lang]["insertConfigPath"])
-                    self.ao.loadConfig(path)
-                    if(self.ao.configured):
-                        print(AutoOrganizerInterface.languages[lang]["configLoaded"])
-                    else:
+                    try:
+                        path = input(AutoOrganizerInterface.languages[lang]["insertConfigPath"])
+                        self.ao.loadConfig(path)
+                        if(self.ao.configured):
+                            print(AutoOrganizerInterface.languages[lang]["configLoaded"])
+                        else:
+                            print(AutoOrganizerInterface.languages[lang]["configError"])
+                    except:
                         print(AutoOrganizerInterface.languages[lang]["configError"])
                 elif choice == "2":
-                    path = input(AutoOrganizerInterface.languages[lang]["insertBasePath"])
-                    self.ao.configure(path)
-                    if(self.ao.configured):
-                        print(AutoOrganizerInterface.languages[lang]["configInitialized"])
-                    else:
+                    try:
+                        path = input(AutoOrganizerInterface.languages[lang]["insertBasePath"])
+                        self.ao.configure(path)
+                        if(self.ao.configured):
+                            print(AutoOrganizerInterface.languages[lang]["configInitialized"])
+                        else:
+                            print(AutoOrganizerInterface.languages[lang]["configInitError"])
+                    except:
                         print(AutoOrganizerInterface.languages[lang]["configInitError"])
                 elif choice == "3":
                     print(AutoOrganizerInterface.languages[lang]["goodbye"])
@@ -338,26 +347,38 @@ class AutoOrganizerInterface(InterfaceDefinition):
                 print(AutoOrganizerInterface.languages[lang]["choiceExit2"])
                 choice = input(AutoOrganizerInterface.languages[lang]["choice"])
                 if choice == "1":
-                    path = input(AutoOrganizerInterface.languages[lang]["insertPath"])
-                    tags = [i.strip() for i in input(AutoOrganizerInterface.languages[lang]["insertTags"]).split(",") if i.strip() != ""]
-                    if self.ao.addFile(path, tags):
-                        print(AutoOrganizerInterface.languages[lang]["fileAdded"])
-                    else:
+                    try:
+                        path = input(AutoOrganizerInterface.languages[lang]["insertPath"])
+                        tags = [i.strip() for i in input(AutoOrganizerInterface.languages[lang]["insertTags"]).split(",") if i.strip() != ""]
+                        if self.ao.addFile(path, tags):
+                            print(AutoOrganizerInterface.languages[lang]["fileAdded"])
+                        else:
+                            print(AutoOrganizerInterface.languages[lang]["fileAddError"])
+                    except:
                         print(AutoOrganizerInterface.languages[lang]["fileAddError"])
                 elif choice == "2":
-                    id = int(input(AutoOrganizerInterface.languages[lang]["insertIdFileToRemove"]))
-                    if self.ao.removeFile(id):
-                        print(AutoOrganizerInterface.languages[lang]["fileRemoved"])
-                    else:
+                    try:
+                        id = int(input(AutoOrganizerInterface.languages[lang]["insertIdFileToRemove"]))
+                        if self.ao.removeFile(id):
+                            print(AutoOrganizerInterface.languages[lang]["fileRemoved"])
+                        else:
+                            print(AutoOrganizerInterface.languages[lang]["fileRemoveError"])
+                    except:
                         print(AutoOrganizerInterface.languages[lang]["fileRemoveError"])
                 elif choice == "3":
-                    tags = [i.strip() for i in input(AutoOrganizerInterface.languages[lang]["insertTags"]).split(",") if i.strip() != ""]
-                    for file in self.ao.search(tags):
-                        print(file["id"], file["name"])
+                    try:
+                        tags = [i.strip() for i in input(AutoOrganizerInterface.languages[lang]["insertTags"]).split(",") if i.strip() != ""]
+                        for file in self.ao.search(tags):
+                            print(file["id"], file["name"])
+                    except:
+                        print(AutoOrganizerInterface.languages[lang]["searchError"])
                 elif choice == "4":
-                    id = int(input(AutoOrganizerInterface.languages[lang]["insertIdFileToSearchTags"]))
-                    for tag in self.ao.showTags(id):
-                        print(tag)
+                    try:
+                        id = int(input(AutoOrganizerInterface.languages[lang]["insertIdFileToSearchTags"]))
+                        for tag in self.ao.showTags(id):
+                            print(tag)
+                    except:
+                        print(AutoOrganizerInterface.languages[lang]["showTagsError"])
                 elif choice == "5":
                     print(AutoOrganizerInterface.languages[lang]["goodbye"])
                     return

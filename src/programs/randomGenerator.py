@@ -1,5 +1,5 @@
 from random import randint
-from interfaceDefinition import InterfaceDefinition
+from programs.interfaceDefinition import InterfaceDefinition
 
 class RandomGenerator:
     """
@@ -93,7 +93,13 @@ class RandomGeneratorInterface(InterfaceDefinition):
             "goodbye": "arrivederci",
             "pressEnterToContinue": "\nPremi invio per continuare...",
             "insertMaximumValue": "Inserisci il valore massimo: ",
-            "insertMinimumValue": "Inserisci il valore minimo: "
+            "insertMinimumValue": "Inserisci il valore minimo: ",
+            "errorGeneratingRandomNumber": "Errore generando un numero casuale",
+            "errorResetting": "Errore resettando",
+            "errorSettingMaximum": "Errore impostando il valore massimo",
+            "errorSettingMinimum": "Errore impostando il valore minimo",
+            "errorShowingCalledNumbers": "Errore mostrando i numeri già chiamati",
+            "errorShowingStatistics": "Errore mostrando le statistiche"
         },
         "eng": {
             "choiceRandomNumber": "1. Generate a random number",
@@ -112,7 +118,13 @@ class RandomGeneratorInterface(InterfaceDefinition):
             "goodbye": "goodbye",
             "pressEnterToContinue": "\nPress enter to continue...",
             "insertMaximumValue": "Insert maximum value: ",
-            "insertMinimumValue": "Insert minimum value: "
+            "insertMinimumValue": "Insert minimum value: ",
+            "errorGeneratingRandomNumber": "Error generating a random number",
+            "errorResetting": "Error resetting",
+            "errorSettingMaximum": "Error setting maximum value",
+            "errorSettingMinimum": "Error setting minimum value",
+            "errorShowingCalledNumbers": "Error showing called numbers",
+            "errorShowingStatistics": "Error showing statistics"
         }
     }
 
@@ -126,7 +138,8 @@ class RandomGeneratorInterface(InterfaceDefinition):
         Returns:
             None
         """
-        super().__init__(["generatore casuali ricordatore"], "0.1", "dp")
+
+        super().__init__(["Random Generator With Memory"], "0.1", "dp")
         self.rg = rg if rg != None else RandomGenerator()
 
     def textInterface(self, lang="eng"):
@@ -139,6 +152,7 @@ class RandomGeneratorInterface(InterfaceDefinition):
         Returns:
             None
         """
+        
         while True:
             super().drowPrologue()
             print(RandomGeneratorInterface.languages[lang]["choiceRandomNumber"])
@@ -152,28 +166,49 @@ class RandomGeneratorInterface(InterfaceDefinition):
             choiceStr = input(RandomGeneratorInterface.languages[lang]["choice"])
             choice = int(choiceStr if choiceStr.isnumeric() else "2")
             if choice == 1:
-                print(self.rg.generateRandom())
+                try:
+                    print(self.rg.generateRandom())
+                except:
+                    print(RandomGeneratorInterface.languages[lang]["errorGeneratingRandomNumber"])
             elif choice == 2:
-                if(len(self.rg.alreadyCalled) == self.rg.maximum - self.rg.minimum + 1):
-                    print(RandomGeneratorInterface.languages[lang]["allNumbersCalled"])
-                else:
-                    print(self.rg.generateRandomWithoutRepetitions())
+                try:
+                    if(len(self.rg.alreadyCalled) == self.rg.maximum - self.rg.minimum + 1):
+                        print(RandomGeneratorInterface.languages[lang]["allNumbersCalled"])
+                    else:
+                        print(self.rg.generateRandomWithoutRepetitions())
+                except:
+                    print(RandomGeneratorInterface.languages[lang]["errorGeneratingRandomNumber"])
             elif choice == 3:
-                self.rg.reset()
+                try:
+                    self.rg.reset()
+                except:
+                    print(RandomGeneratorInterface.languages[lang]["errorResetting"])
             elif choice == 4:
-                self.rg.maximum = int(input(RandomGeneratorInterface.languages[lang]["insertMaximumValue"]))
+                try:
+                    self.rg.maximum = int(input(RandomGeneratorInterface.languages[lang]["insertMaximumValue"]))
+                except:
+                    print(RandomGeneratorInterface.languages[lang]["errorSettingMaximum"])
             elif choice == 5:
-                self.rg.minimum = int(input(RandomGeneratorInterface.languages[lang]["insertMinimumValue"]))
+                try:
+                    self.rg.minimum = int(input(RandomGeneratorInterface.languages[lang]["insertMinimumValue"]))
+                except:
+                    print(RandomGeneratorInterface.languages[lang]["errorSettingMinimum"])
             elif choice == 6:
-                for i in range(len(self.rg.alreadyCalled)):
-                    print(self.rg.alreadyCalled[i], end=" ")
-                    if(i+1 % 10 == 0):
-                        print()
+                try:
+                    for i in range(len(self.rg.alreadyCalled)):
+                        print(self.rg.alreadyCalled[i], end=" ")
+                        if(i+1 % 10 == 0):
+                            print()
+                except:
+                    print(RandomGeneratorInterface.languages[lang]["errorShowingCalledNumbers"])
             elif choice == 7:
-                howManyCalled = len(self.rg.alreadyCalled)
-                howManyToBeCalled = self.rg.maximum - self.rg.minimum + 1 - howManyCalled
-                print(RandomGeneratorInterface.languages[lang]["howManyCalled"] + str(howManyCalled))
-                print(RandomGeneratorInterface.languages[lang]["howManyToBeCalled"] + str(howManyToBeCalled))
+                try:
+                    howManyCalled = len(self.rg.alreadyCalled)
+                    howManyToBeCalled = self.rg.maximum - self.rg.minimum + 1 - howManyCalled
+                    print(RandomGeneratorInterface.languages[lang]["howManyCalled"] + str(howManyCalled))
+                    print(RandomGeneratorInterface.languages[lang]["howManyToBeCalled"] + str(howManyToBeCalled))
+                except:
+                    print(RandomGeneratorInterface.languages[lang]["errorShowingStatistics"])
             elif choice == 8:
                 print(RandomGeneratorInterface.languages[lang]["goodbye"])
                 return

@@ -1,5 +1,5 @@
 import math
-from interfaceDefinition import InterfaceDefinition
+from programs.interfaceDefinition import InterfaceDefinition
 
 class Add:
     """
@@ -384,6 +384,7 @@ class Log:
     Methods:
         __call__: logarithm in base b of a
     """
+
     def __call__(self, operands):
         if len(operands) != 2:
             raise Exception("Invalid expression")
@@ -498,7 +499,6 @@ class Expression:
         Returns:
             None
         """
-
         self.stringExpression = stringExpression
         self.operator = None
         self.operands = []
@@ -514,7 +514,6 @@ class Expression:
         Returns:
             None
         """
-
         if operand == "":
             raise Exception("Invalid expression")
         elif "." in operand and (operand.count(".") > 1 or operand[-1] == "."):
@@ -535,7 +534,6 @@ class Expression:
         Returns:
             None
         """
-
         self.removeInvisibleChars()
         currentString = ""
         state = 0
@@ -676,7 +674,6 @@ class BaseConverter:
         Returns:
             str: converted number
         """
-
         if(type(inputNumber) == str):
             inputNumber = int(inputNumber)
         outputNumber = ""
@@ -812,7 +809,6 @@ class DigitalAbaco(InterfaceDefinition):
         Returns:
             None
         """
-
         super().__init__(["Digital Abaco"], "0.1", "dp")
     
     def textInterface(self, lang="eng"):
@@ -825,7 +821,6 @@ class DigitalAbaco(InterfaceDefinition):
         Returns:
             None
         """
-
         while True:
             super().drowPrologue()
             print(self.languages[lang]["choiceFile"])
@@ -835,8 +830,8 @@ class DigitalAbaco(InterfaceDefinition):
             print(self.languages[lang]["choiceExit"])
             choice = input(self.languages[lang]["choice"])
             if choice == "1":
-                fileName = input(self.languages[lang]["insertFile"])
                 try:
+                    fileName = input(self.languages[lang]["insertFile"])
                     with open(fileName, "r") as file:
                         expr = Expression(file.read())
                         expr.parseExpression()
@@ -844,16 +839,19 @@ class DigitalAbaco(InterfaceDefinition):
                 except:
                     print(self.languages[lang]["invalidFile"])
             elif choice == "2":
-                exprString = input(self.languages[lang]["insertExpression"])
                 try:
+                    exprString = input(self.languages[lang]["insertExpression"])
                     expr = Expression(exprString)
                     expr.parseExpression()
                     print(expr.evaluate())
                 except:
                     print(self.languages[lang]["invalidExpression"])
             elif choice == "3":
-                for key in Expression.operators.keys():
-                    print(key + ": " + self.languages[lang][key+"Description"])
+                try:
+                    for key in Expression.operators.keys():
+                        print(key + ": " + self.languages[lang][key+"Description"])
+                except:
+                    print(self.languages[lang]["invalidExpression"])
             elif choice == "4":
                 inputNumber = input(self.languages[lang]["insertNumber"])
                 inputBase = input(self.languages[lang]["insertInputBase"])
