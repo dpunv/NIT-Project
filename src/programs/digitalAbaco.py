@@ -514,14 +514,24 @@ class Expression:
         Returns:
             None
         """
+        inverse = False
         if operand == "":
             raise Exception("Invalid expression")
-        elif "." in operand and (operand.count(".") > 1 or operand[-1] == "."):
+        elif operand[0] == "-":
+            inverse = True
+            operand = operand[1:]
+        if "." in operand and (operand.count(".") > 1 or operand[-1] == "."):
             raise Exception("Invalid expression")
         elif "." in operand and operand.count(".") == 1:
-            self.operands.append(float(operand))
+            if inverse:
+                self.operands.append(float(operand) * (-1))
+            else:
+                self.operands.append(float(operand))
         elif operand.isnumeric():
-            self.operands.append(int(operand))
+            if inverse:
+                self.operands.append(int(operand) * (-1))
+            else:
+                self.operands.append(int(operand))
         else:
             subExpr = Expression(operand)
             subExpr.parseExpression()
