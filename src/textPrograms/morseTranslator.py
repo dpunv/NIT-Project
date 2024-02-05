@@ -1,4 +1,4 @@
-from programs.interfaceDefinition import InterfaceDefinition
+from interfaces.interfaceDefinition import InterfaceDefinition
 
 class MorseTranslator:
     """
