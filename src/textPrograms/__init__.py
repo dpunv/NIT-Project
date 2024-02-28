@@ -1,1 +1,1 @@
-__all__ = ["autoOrganizer", "morseTranslator", "randomGenerator", "digitalAbaco", "fileDiver", "complexCalculator", "queryCollections"]
+__all__ = ["autoOrganizer", "morseTranslator", "randomGenerator", "digitalAbaco", "fileDiver", "complexCalculator", "queryCollections", "NALM"]

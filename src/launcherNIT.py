@@ -59,7 +59,8 @@ class LauncherNIT(InterfaceDefinition):
             "Digital Abaco": digitalAbaco.DigitalAbaco(),
             "File Diver": fileDiver.FileDiverInterface(),
             "Complex Calculator": complexCalculator.ComplexCalculatorInterface(complexCalculator.Calculator()),
-            "Query Collections": queryCollections.QueryCollections()
+            "Query Collections": queryCollections.QueryCollections(),
+            "NALM": NALM.NALM()
         }
 
     def textInterface(self):
