@@ -1,4 +1,5 @@
 src/__pycache__/*
-src/programs/__pycache__/*
+src/textPrograms/__pycache__/*
+src/interfaces/__pycache__/*
 /NITConfig.json
 /src/NITConfig.json

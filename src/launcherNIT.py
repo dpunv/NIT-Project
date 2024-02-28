@@ -1,5 +1,6 @@
 
-from programs import autoOrganizer, morseTranslator, randomGenerator, digitalAbaco, fileDiver, interfaceDefinition
+from textPrograms import *
+from interfaces.interfaceDefinition import InterfaceDefinition
 import os
 import json
 try:
@@ -7,7 +8,7 @@ try:
 except ImportError:
     pass
 
-class LauncherNIT(interfaceDefinition.InterfaceDefinition):
+class LauncherNIT(InterfaceDefinition):
     """
     Class that represent the launcher of the NIT programs
 
@@ -56,7 +57,10 @@ class LauncherNIT(interfaceDefinition.InterfaceDefinition):
             "Morse Translator": morseTranslator.MorseTranslatorInterface(morseTranslator.MorseTranslator()),
             "Random Generator With Memory:": randomGenerator.RandomGeneratorInterface(randomGenerator.RandomGenerator()),
             "Digital Abaco": digitalAbaco.DigitalAbaco(),
-            "File Diver": fileDiver.FileDiverInterface()
+            "File Diver": fileDiver.FileDiverInterface(),
+            "Complex Calculator": complexCalculator.ComplexCalculatorInterface(complexCalculator.Calculator()),
+            "Query Collections": queryCollections.QueryCollections(),
+            "NALM": NALM.NALM()
         }
 
     def textInterface(self):

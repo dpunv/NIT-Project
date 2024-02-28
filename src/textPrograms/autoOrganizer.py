@@ -1,7 +1,7 @@
 import os
 import json
 import shutil
-from programs.interfaceDefinition import InterfaceDefinition
+from interfaces.interfaceDefinition import InterfaceDefinition
 
 class AutoOrganizer:
     """

@@ -1,4 +1,4 @@
-from programs.interfaceDefinition import InterfaceDefinition
+from interfaces.interfaceDefinition import InterfaceDefinition
 import math
 import os
 
@@ -240,7 +240,7 @@ class FileDiverInterface(InterfaceDefinition):
             "exitChoice": "8. Esci",
             "chooseOption": "Scegli un'opzione: ",
             "chooseExtension": "Scegli un'estensione: ",
-            "choosePath": "Scegli un percorso: ",
+            "choosePath": "Scegli un percorso (vuoto per uscire): ",
             "invalidOption": "Opzione non valida",
             "invalidPath": "Percorso non valido",
             "invalidExtension": "Estensione non valida",
@@ -265,7 +265,7 @@ class FileDiverInterface(InterfaceDefinition):
             "exitChoice": "8. Exit",
             "chooseOption": "Choose an option: ",
             "chooseExtension": "Choose an extension: ",
-            "choosePath": "Choose a path: ",
+            "choosePath": "Choose a path (empty to leave): ",
             "invalidOption": "Invalid option",
             "invalidPath": "Invalid path",
             "invalidExtension": "Invalid extension",
@@ -304,6 +304,10 @@ class FileDiverInterface(InterfaceDefinition):
         while True:
             super().drowPrologue()
             path = input(self.languages[lang]["choosePath"])
+            alreadyPressed = False
+            if path == "":
+                print(self.languages[lang]["goodbye"])
+                return
             if os.path.isdir(path):
                 fd = FileDiver(path)
                 continueLoop = True
@@ -362,6 +366,7 @@ class FileDiverInterface(InterfaceDefinition):
                             print(self.languages[lang]["errorWhileGettingMaxFolderDepth"])
                     elif choice == "7":
                         continueLoop = False
+                        alreadyPressed = True
                     elif choice == "8":
                         print(self.languages[lang]["goodbye"])
                         return
@@ -370,6 +375,9 @@ class FileDiverInterface(InterfaceDefinition):
                     input(self.languages[lang]["pressEnter"])
             else:
                 print(self.languages[lang]["invalidPath"])
+            if not alreadyPressed:
+                input(self.languages[lang]["pressEnter"])
+
 
 if __name__ == "__main__":
     FileDiverInterface().textInterface()
