@@ -694,5 +694,14 @@ class QueryCollections(InterfaceDefinition):
             if not alreadyPressed:
                 input(self.languages[lang]["pressEnter"])
 
+def construct():
+    """
+    Construct a query collections program
+
+    Returns:
+        QueryCollections: a query collections program
+    """
+    return QueryCollections()
+
 if __name__ == "__main__":
     QueryCollections().textInterface()

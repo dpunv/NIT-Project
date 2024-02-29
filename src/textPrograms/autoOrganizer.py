@@ -386,6 +386,14 @@ class AutoOrganizerInterface(InterfaceDefinition):
                     print(AutoOrganizerInterface.languages[lang]["choiceNotValid"])
             input(AutoOrganizerInterface.languages[lang]["pressEnterToContinue"])
 
+def construct():
+    """
+    Construct the AutoOrganizerInterface
+
+    Returns:
+        AutoOrganizerInterface: The AutoOrganizerInterface
+    """
+    return AutoOrganizerInterface(AutoOrganizer())
 
 if __name__ == "__main__":
     AutoOrganizerInterface().textInterface()

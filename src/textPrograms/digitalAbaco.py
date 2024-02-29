@@ -877,6 +877,15 @@ class DigitalAbaco(InterfaceDefinition):
                 print(self.languages[lang]["invalidChoice"])
             input(self.languages[lang]["pressEnter"])
 
+def construct():
+    """
+    Construct the digital abaco interface
+
+    Returns:
+        DigitalAbaco: digital abaco interface
+    """
+    return DigitalAbaco()
+
 
 if __name__ == "__main__":
     DigitalAbaco().textInterface()

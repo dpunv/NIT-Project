@@ -1,5 +1,104 @@
 from interfaces.interfaceDefinition import InterfaceDefinition
 
+class IOOperator:
+    """
+    Class that represent the IO operator, it is not implemented (implemented in the subclasses)
+
+    Methods:
+        write(string): write a string
+        read(): read a string
+    """
+
+    def __init__(self):
+        """
+        Constructor of the class
+
+        Returns:
+            None
+        """
+        pass
+
+    def write(self, string):
+        """
+        Write a string
+
+        Args:
+            string (str): the string to write
+
+        Returns:
+            None
+        """
+        pass
+
+    def read(self, string):
+        """
+        Read a string
+
+        Returns:
+            str: the read string
+        """
+        return ""
+
+class TerminalIO(IOOperator):
+    """
+    Class that represent the terminal IO operator
+
+    Static Attributes:
+        languages (dict): dictionary that contains all the languages supported by the terminal
+
+    Attributes:
+        language (str): the language of the terminal
+
+    Methods:
+        write(string): write a string
+        read(): read a string
+    """
+
+    languages = {
+        "ita": {
+            "defaultPromptIn": "INSERISCI VALORE: "
+        },
+        "eng": {
+            "defaultPromptIn": "INSERT VALUE: "
+        }
+    }
+
+    def __init__(self, language="eng"):
+        if language not in self.languages:
+            language = "eng"
+        self.language = language
+        """
+        Constructor of the class
+
+        Args:
+            language (str): the language of the terminal
+
+        Returns:
+            None
+        """
+        super().__init__()
+
+    def write(self, string):
+        """
+        Write a string
+
+        Args:
+            string (str): the string to write
+
+        Returns:
+            None
+        """
+        print(string)
+
+    def read(self, string):
+        """
+        Read a string
+
+        Returns:
+            str: the read string
+        """
+        return input(string)
+
 class push:
     """
     Class that represent the PUSH command
@@ -25,7 +124,7 @@ class print_:
     Class that represent the PRINT command
     """
     def __call__(self, executor):
-        print(executor.stack[-1])
+        executor.io.write(executor.stack[-1])
 
     def toCpp(self, executor):
         return f"\n        std::cout << stack.top() << std::endl;\n"
@@ -224,17 +323,17 @@ class num:
         executor.stack.append(len(executor.stack))
 
     def toCpp(self, executor):
-        return "\n        stack.push(stack.size());\n"
+        return "\n        stack.push(Element((int) stack.size()));\n"
 
 class input_:
     """
     Class that represent the INPUT command
     """
     def __call__(self, executor):
-        executor.stack.append(input("INSERT VALUE: "))
+        executor.stack.append(executor.io.read(executor.io.languages[executor.io.language]["defaultPromptIn"]))
 
     def toCpp(self, executor):
-        return "\n        std::cout<<\"INSERT VALUE: \";\n        std::cin >> str1;\n        stack.push(Element(str1));\n"
+        return "\n        std::cout<<\"" + executor.io.languages[executor.io.language]["defaultPromptIn"] + "\";\n        std::cin >> str1;\n        stack.push(Element(str1));\n"
 
 class int_:
     """
@@ -488,6 +587,8 @@ int main() {
         for index, instruction in enumerate(executor.instructions):
             if index != len(executor.instructions)-1:
                 s += f"    instr_{index}: //{instruction.command}{instruction.toCpp(executor)}"
+                if(instruction.command == "INSTR"):
+                    s += "\n        stack.push(Element(" + str(index) + "));\n"
         s = s + "\n}"
         with open(filename, "w") as file:
             file.write(s)
@@ -511,6 +612,17 @@ class include:
 
     def toCpp(self, executor):
         return "\n"
+
+class instr:
+    """
+    Class that represent the INSTR command
+    """
+
+    def __call__(self, executor):
+        executor.stack.append(executor.index)
+    
+    def toCpp(self, executor):
+        return ""
 
 class Instruction:
     """
@@ -609,6 +721,7 @@ class Executor:
     Class that represent the executor of the instructions
 
     Attributes:
+        io (IOOperator): the IO operator of the executor
         variables (dict): the dictionary of the variables of the executor
         stack (list): the stack of the executor
         instructions (list): the list of the instructions of the executor
@@ -625,13 +738,17 @@ class Executor:
         reset(): reset the executor
     """
 
-    def __init__(self):
+    def __init__(self, io):
         """
         Constructor of the class
+
+        Args:
+            io (IOOperator): the IO operator of the executor
 
         Returns:
             None
         """
+        self.io = io
         self.variables = {}
         self.stack = []
         self.instructions = []
@@ -671,7 +788,8 @@ class Executor:
             "END": end(),
             "DEFINE": define(),
             "COMPILE": compile(),
-            "INCLUDE": include()
+            "INCLUDE": include(),
+            "INSTR": instr()
         }
     
     def addInstruction(self, instruction, offset=0):
@@ -784,7 +902,10 @@ STORE             -->    Salva un valore nello stack con una chiave
 LOAD              -->    Carica un valore dallo stack con una chiave
 IMPORT            -->    Importa un file di istruzioni, il cui nome è inserito nello stack
 END               -->    Termina l'esecuzione del programma
-DEFINE            -->    Definisce una funzione
+DEFINE            -->    Definisce una funzione (funziona solo in modalità interprete)
+COMPILE           -->    Compila il programma in un file C++
+INCLUDE           -->    Includi un file di istruzioni nel programma, ma le istruzioni non vengono eseguite
+INSTR             -->    Carica l'indice dell'istruzione corrente nello stack 
             """,
             "goodbye": "Arrivederci",
             "error": "Si è verificato un errore"
@@ -821,7 +942,10 @@ STORE             -->    Saves a value into the stack with a key
 LOAD              -->    Loads a value from the stack with a key
 IMPORT            -->    Imports an instruction file, whose name is pushed into the stack
 END               -->    Terminates the program execution
-DEFINE            -->    Defines a function
+DEFINE            -->    Defines a function (it works only in the interpreter mode)
+COMPILE           -->    Compiles the program into a C++ file
+INCLUDE           -->    Includes an instruction file into the program, but the istructions are not executed
+INSTR             -->    Load the index of the current instruction in the stack
             """,
             "goodbye": "Goodbye",
             "error": "An error occurred"
@@ -847,7 +971,7 @@ DEFINE            -->    Defines a function
         Returns:
             None
         """
-        executor = Executor()
+        executor = Executor(TerminalIO(lang))
         super().drowPrologue()
         while True:
             try:
@@ -860,8 +984,17 @@ DEFINE            -->    Defines a function
                     if(executor.terminated):
                         print(self.languages[lang]["goodbye"])
                         return
-            except Exception:
+            except Exception as e:
                 print(self.languages[lang]["error"])
+
+def construct():
+    """
+    Construct the NALM program
+
+    Returns:
+        NALM: the NALM program
+    """
+    return NALM()
 
 if __name__ == "__main__":
     nalm = NALM().textInterface()

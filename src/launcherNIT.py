@@ -52,16 +52,8 @@ class LauncherNIT(InterfaceDefinition):
         """
 
         super().__init__(["launcher NIT"], "0.1", "dp")
-        self.programs = {
-            "Auto Organizer": autoOrganizer.AutoOrganizerInterface(autoOrganizer.AutoOrganizer()),
-            "Morse Translator": morseTranslator.MorseTranslatorInterface(morseTranslator.MorseTranslator()),
-            "Random Generator With Memory:": randomGenerator.RandomGeneratorInterface(randomGenerator.RandomGenerator()),
-            "Digital Abaco": digitalAbaco.DigitalAbaco(),
-            "File Diver": fileDiver.FileDiverInterface(),
-            "Complex Calculator": complexCalculator.ComplexCalculatorInterface(complexCalculator.Calculator()),
-            "Query Collections": queryCollections.QueryCollections(),
-            "NALM": NALM.NALM()
-        }
+        self.programs = {}
+        [exec("self.programs[\"" + i.strip().split(".")[0].strip() +"\"] = " + i.strip().split(".")[0].strip() + ".construct()") for i in os.listdir(os.getcwd()+"/src/textPrograms") if not i.startswith("__")]
 
     def textInterface(self):
         """

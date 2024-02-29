@@ -163,5 +163,14 @@ class MorseTranslatorInterface(InterfaceDefinition):
                     print(MorseTranslatorInterface.languages[lang]["errorMessage"])
             input(MorseTranslatorInterface.languages[lang]["pressEnterToContinue"])
 
+def construct():
+    """
+    Construct a morse translator interface
+
+    Returns:
+        MorseTranslatorInterface: a morse translator interface
+    """
+    return MorseTranslatorInterface(MorseTranslator())
+
 if __name__ == "__main__":
     MorseTranslatorInterface().textInterface()

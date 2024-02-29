@@ -216,5 +216,14 @@ class RandomGeneratorInterface(InterfaceDefinition):
                 print(RandomGeneratorInterface.languages[lang]["choiceNotValid"])
             input(RandomGeneratorInterface.languages[lang]["pressEnterToContinue"])
 
+def construct():
+    """
+    Method that construct a random number generator interface
+
+    Returns:
+        RandomGeneratorInterface: a random number generator interface
+    """
+    return RandomGeneratorInterface(RandomGenerator())
+
 if __name__ == "__main__":
     RandomGeneratorInterface().textInterface()

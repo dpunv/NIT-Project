@@ -477,6 +477,14 @@ class ComplexCalculatorInterface(InterfaceDefinition):
                 print(self.languages[lang]["genericError"])
             input(self.languages[lang]["pressEnterToContinue"])
 
+def construct():
+    """
+    Construct the AutoOrganizerInterface
+
+    Returns:
+        AutoOrganizerInterface: The AutoOrganizerInterface
+    """
+    return ComplexCalculatorInterface(Calculator())
 
 if __name__ == "__main__":
     ComplexCalculatorInterface().textInterface()

@@ -378,6 +378,14 @@ class FileDiverInterface(InterfaceDefinition):
             if not alreadyPressed:
                 input(self.languages[lang]["pressEnter"])
 
+def construct():
+    """
+    Function that returns a FileDiverInterface object.
+
+    Returns:
+        FileDiverInterface: A FileDiverInterface object.
+    """
+    return FileDiverInterface()
 
 if __name__ == "__main__":
     FileDiverInterface().textInterface()
